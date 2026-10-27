@@ -1,0 +1,719 @@
+/* --------------------------------------------------------------------------
+ * Vditor, re-skinned as a quiet sheet of paper.
+ * The selectors deliberately out-rank Vditor's runtime content theme.
+ * ----------------------------------------------------------------------- */
+
+.markdown-editor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.72) 0%, rgba(251, 250, 246, 0) 26%),
+    var(--surface);
+}
+
+.markdown-editor__mount {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.editor-card .vditor {
+  --border-color: transparent;
+  --second-color: rgba(80, 69, 55, 0.36);
+  --panel-background-color: #fffdf8;
+  --panel-shadow: 0 12px 34px -18px rgba(47, 37, 26, 0.38);
+  --toolbar-background-color: #faf8f2;
+  --toolbar-icon-color: #72695d;
+  --toolbar-icon-hover-color: var(--ink);
+  --toolbar-height: 32px;
+  --toolbar-divider-margin-top: 8px;
+  --textarea-background-color: transparent;
+  --textarea-text-color: var(--ink);
+  --resize-icon-color: var(--muted-soft);
+  --resize-background-color: transparent;
+  --resize-hover-icon-color: var(--accent);
+  --resize-hover-background-color: transparent;
+  --count-background-color: transparent;
+  --heading-border-color: var(--line);
+  --blockquote-color: var(--muted);
+  --ir-heading-color: var(--accent);
+  --ir-title-color: var(--muted);
+  --ir-bi-color: #9a5337;
+  --ir-link-color: var(--accent-deep);
+  --ir-bracket-color: #a07662;
+  --ir-paren-color: var(--sage);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100% !important;
+  overflow: hidden;
+  color: var(--ink);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--sans);
+}
+
+/* Toolbar */
+
+.editor-card .vditor-toolbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 1px;
+  min-height: 47px;
+  padding: 7px 15px;
+  border-bottom: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(253, 251, 246, 0.92), rgba(250, 247, 240, 0.86));
+  user-select: none;
+}
+
+.editor-card .vditor-toolbar__item {
+  display: flex;
+  float: none;
+  align-items: center;
+}
+
+.editor-card .vditor-toolbar__item .vditor-tooltipped {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  padding: 0;
+  place-items: center;
+  color: var(--toolbar-icon-color);
+  border-radius: 6px;
+  background: transparent;
+  transition:
+    color 140ms ease,
+    background-color 140ms ease;
+}
+
+.editor-card .vditor-toolbar__item .vditor-tooltipped:hover,
+.editor-card .vditor-toolbar__item .vditor-tooltipped:focus,
+.editor-card .vditor-toolbar__item .vditor-menu--current {
+  color: var(--accent-deep);
+  background: var(--accent-wash);
+}
+
+.editor-card .vditor-toolbar__item svg {
+  width: 15px;
+  height: 15px;
+}
+
+.editor-card .vditor-toolbar__divider {
+  float: none;
+  width: 1px;
+  height: 15px;
+  margin: 0 8px;
+  border: 0;
+  background: var(--line-strong);
+  opacity: 0.72;
+}
+
+.editor-card .vditor-tooltipped::after {
+  padding: 5px 8px;
+  color: #f9f3e8;
+  border-radius: 5px;
+  background: #2b271f;
+  font-family: var(--sans);
+  font-size: 10px;
+  line-height: 1.5;
+  box-shadow: 0 5px 14px -6px rgba(32, 25, 18, 0.55);
+}
+
+.editor-card .vditor-panel {
+  padding: 6px;
+  color: var(--toolbar-icon-color);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel-background-color);
+  box-shadow: 0 16px 40px -19px rgba(47, 37, 26, 0.4);
+}
+
+.editor-card .vditor-panel--arrow::before {
+  border-bottom-color: var(--panel-background-color);
+}
+
+.editor-card .vditor-icon {
+  width: 28px;
+  height: 27px;
+  padding: 7px;
+  color: var(--muted);
+  border-radius: 5px;
+  transition:
+    color 140ms ease,
+    background-color 140ms ease;
+}
+
+.editor-card .vditor-icon:hover,
+.editor-card .vditor-icon--current {
+  color: var(--accent-deep);
+  background: var(--accent-wash);
+}
+
+.editor-card .vditor-input {
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.6);
+  font-family: var(--sans);
+  font-size: 11px;
+}
+
+.editor-card .vditor-input:focus {
+  border-color: rgba(185, 93, 56, 0.3);
+  background: #fffdf8;
+  outline: none;
+}
+
+/* Canvas */
+
+.editor-card .vditor-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: transparent;
+}
+
+.editor-card .vditor-ir {
+  height: 100%;
+  min-height: 0;
+  background: transparent;
+}
+
+.editor-card .vditor-ir pre.vditor-reset {
+  height: 100%;
+  margin: 0;
+  padding: clamp(36px, 3.8vw, 54px) max(46px, calc((100% - 840px) / 2)) 190px;
+  overflow: auto;
+  color: var(--ink);
+  background: transparent;
+  caret-color: var(--accent);
+  font-family: var(--serif);
+  font-size: 17px;
+  font-style: normal;
+  font-variant-ligatures: normal;
+  font-weight: 420;
+  letter-spacing: 0.012em;
+  line-height: 1.94;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.editor-card .vditor-ir pre.vditor-reset:focus {
+  outline: none;
+}
+
+.editor-card .vditor-ir pre.vditor-reset:empty::before {
+  color: var(--muted-soft);
+  font-family: var(--serif);
+  font-style: normal;
+  font-weight: 400;
+}
+
+.editor-card .vditor-ir pre.vditor-reset::-webkit-scrollbar {
+  width: 12px;
+}
+
+.editor-card .vditor-ir pre.vditor-reset::-webkit-scrollbar-thumb {
+  border: 4px solid transparent;
+  background: rgba(66, 55, 42, 0.17);
+  background-clip: content-box;
+}
+
+.editor-card .vditor-ir pre.vditor-reset::-webkit-scrollbar-thumb:hover {
+  background: rgba(66, 55, 42, 0.28);
+  background-clip: content-box;
+}
+
+.editor-card .vditor-ir ::selection {
+  color: var(--ink);
+  background: rgba(185, 93, 56, 0.18);
+}
+
+.editor-card .vditor-reset > :first-child {
+  margin-top: 0 !important;
+}
+
+.editor-card .vditor-ir__node--expand .vditor-ir__marker {
+  color: var(--muted-soft);
+  font-family: var(--mono);
+  font-size: 0.78em;
+  font-weight: 400;
+  letter-spacing: 0;
+  opacity: 0.72;
+}
+
+.editor-card .vditor-ir__node--expand .vditor-ir__marker--heading {
+  color: var(--accent);
+  opacity: 0.9;
+}
+
+.editor-card .vditor-ir__node--expand .vditor-ir__marker--bi {
+  color: var(--accent-deep);
+}
+
+.editor-card .vditor-ir__node--expand .vditor-ir__marker--link {
+  color: var(--accent-deep);
+}
+
+.editor-card .vditor-ir__node--expand .vditor-ir__marker--heading::after,
+.editor-card .vditor-ir__node--expand .vditor-ir__marker--heading::before {
+  color: var(--muted-soft);
+}
+
+.editor-card .vditor-ir__preview {
+  min-height: 1.7em;
+}
+
+.editor-card .vditor-ir__link {
+  color: var(--accent-deep);
+  text-decoration-color: rgba(185, 93, 56, 0.35);
+  text-underline-offset: 0.2em;
+}
+
+/* Editorial typography */
+
+.editor-card .vditor-reset {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: inherit;
+  line-height: inherit;
+  word-wrap: break-word;
+}
+
+.editor-card .vditor-reset p {
+  margin: 0 0 1.08em;
+}
+
+.editor-card .vditor-reset h1,
+.editor-card .vditor-reset h2,
+.editor-card .vditor-reset h3,
+.editor-card .vditor-reset h4,
+.editor-card .vditor-reset h5,
+.editor-card .vditor-reset h6 {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-weight: 620;
+  letter-spacing: -0.025em;
+  line-height: 1.4;
+}
+
+.editor-card .vditor-reset h1 {
+  margin: 0 0 0.7em;
+  padding-bottom: 0;
+  border-bottom: 0;
+  font-size: 2.04em;
+  font-weight: 580;
+  letter-spacing: -0.035em;
+}
+
+.editor-card .vditor-reset h2 {
+  position: relative;
+  margin: 1.55em 0 0.62em;
+  padding-top: 0.72em;
+  padding-bottom: 0;
+  border-bottom: 0;
+  font-size: 1.47em;
+}
+
+.editor-card .vditor-reset h2::before {
+  position: absolute;
+  top: 0;
+  left: 1px;
+  width: 21px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--accent);
+  content: '';
+  opacity: 0.42;
+}
+
+.editor-card .vditor-reset h3 {
+  margin: 1.7em 0 0.55em;
+  font-size: 1.23em;
+}
+
+.editor-card .vditor-reset h4 {
+  margin: 1.55em 0 0.45em;
+  font-size: 1.08em;
+  letter-spacing: -0.014em;
+}
+
+.editor-card .vditor-reset h5,
+.editor-card .vditor-reset h6 {
+  margin: 1.45em 0 0.4em;
+  font-size: 0.96em;
+  letter-spacing: 0.03em;
+}
+
+.editor-card .vditor-reset h6 {
+  color: var(--muted);
+}
+
+.editor-card .vditor-reset strong,
+.editor-card .vditor-reset b {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.editor-card .vditor-reset em,
+.editor-card .vditor-reset i {
+  font-style: normal;
+  color: var(--accent-deep);
+  text-decoration: underline;
+  text-decoration-color: rgba(185, 93, 56, 0.26);
+  text-decoration-thickness: 0.055em;
+  text-underline-offset: 0.22em;
+}
+
+.editor-card .vditor-reset a {
+  color: var(--accent-deep);
+  text-decoration-color: rgba(185, 93, 56, 0.32);
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color 150ms ease;
+}
+
+.editor-card .vditor-reset a:hover {
+  text-decoration-color: var(--accent);
+}
+
+.editor-card .vditor-reset del {
+  color: var(--muted);
+  text-decoration-thickness: 1px;
+}
+
+.editor-card .vditor-reset blockquote {
+  margin: 1.45em 0;
+  padding: 0.9em 1.15em;
+  color: var(--ink-soft);
+  border: 0;
+  border-left: 2px solid rgba(185, 93, 56, 0.56);
+  border-radius: 0 7px 7px 0;
+  background: linear-gradient(90deg, var(--accent-wash), rgba(185, 93, 56, 0.022));
+  font-size: 0.95em;
+  line-height: 1.85;
+}
+
+.editor-card .vditor-reset blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.editor-card .vditor-reset blockquote blockquote {
+  margin-right: 0;
+  margin-left: 0.2em;
+  background: transparent;
+}
+
+.editor-card .vditor-reset ul,
+.editor-card .vditor-reset ol {
+  margin: 0 0 1em;
+  padding-left: 1.55em;
+}
+
+.editor-card .vditor-reset li {
+  padding-left: 0.12em;
+  line-height: 1.9;
+}
+
+.editor-card .vditor-reset li + li {
+  margin-top: 0.22em;
+}
+
+.editor-card .vditor-reset li::marker {
+  color: rgba(185, 93, 56, 0.7);
+  font-family: var(--sans);
+  font-size: 0.85em;
+}
+
+.editor-card .vditor-reset li p {
+  margin: 0.25em 0;
+}
+
+.editor-card .vditor-reset input[type='checkbox'] {
+  width: 13px;
+  height: 13px;
+  margin: 0 0.45em 0 0;
+  accent-color: var(--accent);
+  vertical-align: -1px;
+}
+
+.editor-card .vditor-reset hr {
+  height: 1px;
+  margin: 2.3em 0;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(67, 53, 37, 0.2) 22%,
+    rgba(67, 53, 37, 0.2) 78%,
+    transparent
+  );
+}
+
+.editor-card .vditor-reset img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px -18px rgba(47, 36, 24, 0.55);
+}
+
+.editor-card .vditor-reset figure.vditor-image figcaption {
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.68em;
+  letter-spacing: 0.02em;
+}
+
+/* Code */
+
+.editor-card .vditor-reset code:not(.hljs):not(.highlight-chroma) {
+  padding: 0.12em 0.38em;
+  color: #8e4930;
+  border: 1px solid rgba(139, 75, 48, 0.1);
+  border-radius: 4px;
+  background: rgba(185, 93, 56, 0.065);
+  font-family: var(--mono);
+  font-size: 0.8em;
+  word-break: break-word;
+}
+
+.editor-card .vditor-reset pre:not(.vditor-reset) {
+  margin: 1.3em 0;
+  padding: 16px 19px;
+  overflow-x: auto;
+  color: #403a32;
+  border: 1px solid rgba(74, 58, 41, 0.09);
+  border-radius: 10px;
+  background: #f1ece2;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  font-family: var(--mono);
+  font-size: 0.75em;
+  line-height: 1.75;
+}
+
+/* Collapsed IR source markers must not contribute padding or extra gaps. */
+.editor-card .vditor-ir__node:not(.vditor-ir__node--expand) pre.vditor-ir__marker--pre {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.editor-card .vditor-reset pre:not(.vditor-reset) code,
+.editor-card .vditor-reset pre:not(.vditor-reset) code.hljs {
+  display: block;
+  padding: 0;
+  overflow: visible;
+  color: inherit;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 1em;
+  line-height: inherit;
+  white-space: pre;
+}
+
+.editor-card .vditor-reset .hljs {
+  color: #403a32;
+  background: transparent;
+}
+
+.editor-card .vditor-reset .hljs-comment,
+.editor-card .vditor-reset .hljs-quote {
+  color: #958b7d;
+  font-style: normal;
+}
+
+.editor-card .vditor-reset .hljs-keyword,
+.editor-card .vditor-reset .hljs-selector-tag,
+.editor-card .vditor-reset .hljs-literal {
+  color: #9d4e34;
+}
+
+.editor-card .vditor-reset .hljs-string,
+.editor-card .vditor-reset .hljs-title,
+.editor-card .vditor-reset .hljs-section {
+  color: #627048;
+}
+
+.editor-card .vditor-reset .hljs-number,
+.editor-card .vditor-reset .hljs-symbol,
+.editor-card .vditor-reset .hljs-bullet {
+  color: #9b6b34;
+}
+
+.editor-card .vditor-reset .hljs-attr,
+.editor-card .vditor-reset .hljs-variable,
+.editor-card .vditor-reset .hljs-template-variable {
+  color: #8a593e;
+}
+
+.editor-card .vditor-reset .hljs-built_in,
+.editor-card .vditor-reset .hljs-type {
+  color: #486a6c;
+}
+
+.editor-card .vditor-copy {
+  color: var(--muted);
+  border-radius: 4px;
+  background: rgba(255, 253, 247, 0.85);
+  box-shadow: 0 2px 8px rgba(45, 34, 23, 0.1);
+}
+
+/* Tables, rules and misc */
+
+.editor-card .vditor-reset table {
+  display: table;
+  width: 100%;
+  margin: 1.35em 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  border-spacing: 0;
+  border-collapse: separate;
+  font-family: var(--sans);
+  font-size: 0.78em;
+}
+
+.editor-card .vditor-reset table tr {
+  background: transparent;
+  border: 0;
+}
+
+.editor-card .vditor-reset table tbody tr:nth-child(2n) {
+  background: rgba(69, 55, 40, 0.028);
+}
+
+.editor-card .vditor-reset table td,
+.editor-card .vditor-reset table th {
+  padding: 8px 13px;
+  border: 0;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  line-height: 1.65;
+  white-space: normal;
+  word-break: normal;
+}
+
+.editor-card .vditor-reset table th {
+  color: var(--ink-soft);
+  background: rgba(69, 55, 40, 0.055);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.editor-card .vditor-reset table tr:last-child td,
+.editor-card .vditor-reset table tr:last-child th {
+  border-bottom: 0;
+}
+
+.editor-card .vditor-reset table td:last-child,
+.editor-card .vditor-reset table th:last-child {
+  border-right: 0;
+}
+
+.editor-card .vditor-reset kbd {
+  padding: 0.15em 0.4em;
+  color: var(--ink-soft);
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: rgba(255, 253, 248, 0.7);
+  box-shadow: 0 1px 0 rgba(51, 41, 29, 0.08);
+  font-family: var(--sans);
+  font-size: 0.75em;
+}
+
+.editor-card .vditor-reset mark {
+  padding: 0.03em 0.16em;
+  color: var(--ink);
+  background: rgba(218, 177, 92, 0.24);
+}
+
+.editor-card .vditor-reset .callout {
+  border-left-width: 2px;
+}
+
+.editor-card .vditor-reset .footnotes {
+  color: var(--muted);
+  font-size: 0.82em;
+}
+
+/* Loading state */
+
+.editor-loading {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  color: var(--muted-soft);
+  background: var(--surface);
+  font-family: var(--sans);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+}
+
+.editor-loading__mark {
+  width: 27px;
+  height: 27px;
+  border: 1.5px solid rgba(82, 66, 48, 0.16);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+.editor-error {
+  position: absolute;
+  z-index: 3;
+  inset: 47px 0 0;
+  display: grid;
+  place-items: center;
+  padding: 30px;
+  color: var(--danger);
+  background: var(--surface);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+}
+
+/* --------------------------------------------------------------------------
+ * Responsive adjustments
+ * ----------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .editor-card .vditor-ir pre.vditor-reset {
+    padding-right: 42px;
+    padding-left: 42px;
+    font-size: 16.5px;
+  }
+
+  .editor-card .vditor-toolbar {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .editor-card .vditor-toolbar__item .vditor-tooltipped {
+    width: 30px;
+  }
+
+  .editor-card .vditor-toolbar__divider {
+    margin: 0 6px;
+  }
+}
+
+@media (max-height: 620px) {
+  .editor-card .vditor-ir pre.vditor-reset {
+    padding-top: 28px;
+    padding-bottom: 110px;
+  }
+}
