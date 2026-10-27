@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build output
+out/
+release/
+dist/
+.vite/
+*.tsbuildinfo
+
+# Generated Vditor runtime assets
+public/vditor/
+
+# Test artifacts
+coverage/
+test-results/
+screenshots/
+
+# Logs and local files
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Environment
+.env
+.env.*
+!.env.example
